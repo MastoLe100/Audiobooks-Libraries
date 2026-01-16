@@ -1,0 +1,14 @@
+[
+  {
+    "slug": "MastoDeCoco",
+    "label": "Bibliotheque Masto",
+    "owner": "Masto",
+    "avatar": "assets/avatars/masto.png"
+  },
+  {
+    "slug": "Laurn",
+    "label": "Bibliotheque Laurn",
+    "owner": "Laurn",
+    "avatar": "assets/avatars/laurn.png"
+  }
+]

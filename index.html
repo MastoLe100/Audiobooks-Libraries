@@ -3,545 +3,76 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Digi Summer Hub</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@400;700&family=VT323&display=swap" rel="stylesheet">
-
-  <style>
-    :root{
-      --bg: #05060a;
-      --panel: rgba(10, 14, 22, 0.72);
-      --panel2: rgba(12, 18, 30, 0.78);
-      --line: rgba(120, 255, 208, 0.22);
-      --neon: #48ffd2;
-      --warn: #ffb300;
-      --text: #eafff8;
-      --muted: rgba(234, 255, 248, 0.72);
-      --shadow: rgba(0,0,0,0.55);
-    }
-
-    *{ box-sizing:border-box; }
-    html,body{ height:100%; }
-    body{
-      margin:0;
-      background: var(--bg);
-      color: var(--text);
-      font-family: "Oxanium", system-ui, Arial, sans-serif;
-      overflow-x:hidden;
-    }
-
-    /* Background: Summer Wars vibe + sci fi grid */
-    .bg{
-      position:fixed;
-      inset:0;
-      z-index:-3;
-      background:
-        radial-gradient(900px 500px at 20% 15%, rgba(72,255,210,0.12), transparent 60%),
-        radial-gradient(800px 600px at 80% 25%, rgba(255,179,0,0.10), transparent 60%),
-        radial-gradient(900px 700px at 55% 85%, rgba(112,120,255,0.10), transparent 60%),
-        linear-gradient(180deg, rgba(0,0,0,0.2), rgba(0,0,0,0.85));
-    }
-
-    .scanlines{
-      position:fixed;
-      inset:-20%;
-      z-index:-2;
-      pointer-events:none;
-      opacity:0.25;
-      background: repeating-linear-gradient(
-        to bottom,
-        rgba(255,255,255,0.035) 0px,
-        rgba(255,255,255,0.035) 1px,
-        transparent 2px,
-        transparent 6px
-      );
-      transform: rotate(-1deg);
-      mix-blend-mode: overlay;
-      animation: drift 10s linear infinite;
-    }
-    @keyframes drift{
-      0%{ transform: translateY(0) rotate(-1deg); }
-      100%{ transform: translateY(60px) rotate(-1deg); }
-    }
-
-    .grid{
-      position:fixed;
-      inset:0;
-      z-index:-1;
-      pointer-events:none;
-      opacity:0.45;
-      background:
-        linear-gradient(to right, rgba(72,255,210,0.08) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(72,255,210,0.06) 1px, transparent 1px);
-      background-size: 64px 64px;
-      filter: drop-shadow(0 0 12px rgba(72,255,210,0.06));
-      mask-image: radial-gradient(circle at 50% 40%, black 40%, transparent 72%);
-    }
-
-    .wrap{
-      max-width:1100px;
-      margin: 0 auto;
-      padding: 22px 18px 60px;
-    }
-
-    /* Header */
-    .topbar{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      padding: 14px 14px;
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      background: linear-gradient(180deg, var(--panel), rgba(8,10,16,0.55));
-      box-shadow: 0 18px 48px var(--shadow);
-      backdrop-filter: blur(10px);
-    }
-
-    .brand{
-      display:flex;
-      align-items:baseline;
-      gap:10px;
-      min-width: 240px;
-    }
-    .brand .sig{
-      font-family: "VT323", monospace;
-      font-size: 28px;
-      letter-spacing: 1px;
-      color: var(--neon);
-      text-shadow: 0 0 14px rgba(72,255,210,0.35);
-    }
-    .brand .tag{
-      font-size: 12px;
-      color: var(--muted);
-      opacity: 0.9;
-    }
-
-    .status{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      flex-wrap:wrap;
-      justify-content:flex-end;
-    }
-
-    .pill{
-      border: 1px solid rgba(255,255,255,0.12);
-      border-radius: 999px;
-      padding: 8px 10px;
-      background: rgba(0,0,0,0.25);
-      color: var(--muted);
-      font-size: 12px;
-      display:flex;
-      align-items:center;
-      gap:8px;
-      user-select:none;
-    }
-    .dot{
-      width:8px;height:8px;border-radius:999px;
-      background: var(--neon);
-      box-shadow: 0 0 12px rgba(72,255,210,0.55);
-    }
-
-    .btn{
-      border: 1px solid rgba(72,255,210,0.35);
-      background: linear-gradient(180deg, rgba(72,255,210,0.16), rgba(0,0,0,0.25));
-      color: var(--text);
-      border-radius: 12px;
-      padding: 9px 12px;
-      font-weight: 700;
-      cursor:pointer;
-      transition: transform 120ms ease, box-shadow 120ms ease, border-color 120ms ease;
-      user-select:none;
-    }
-    .btn:hover{
-      transform: translateY(-1px);
-      box-shadow: 0 0 0 3px rgba(72,255,210,0.10), 0 14px 40px rgba(0,0,0,0.55);
-      border-color: rgba(72,255,210,0.6);
-    }
-    .btn:active{
-      transform: translateY(0);
-    }
-
-    .main{
-      margin-top: 16px;
-      display:grid;
-      grid-template-columns: 1.15fr 0.85fr;
-      gap: 16px;
-    }
-    @media (max-width: 940px){
-      .main{ grid-template-columns: 1fr; }
-      .brand{ min-width:auto; }
-    }
-
-    .panel{
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      background: linear-gradient(180deg, var(--panel2), rgba(8,10,16,0.55));
-      box-shadow: 0 18px 48px var(--shadow);
-      backdrop-filter: blur(10px);
-      overflow:hidden;
-    }
-
-    .panelHead{
-      padding: 14px 16px;
-      border-bottom: 1px solid rgba(72,255,210,0.14);
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-    }
-    .panelTitle{
-      font-weight: 800;
-      letter-spacing: 0.5px;
-      display:flex;
-      align-items:center;
-      gap:10px;
-    }
-    .panelTitle .mark{
-      width:10px;height:10px;border-radius:2px;
-      background: var(--warn);
-      box-shadow: 0 0 12px rgba(255,179,0,0.35);
-      transform: rotate(6deg);
-    }
-
-    .panelBody{
-      padding: 16px;
-    }
-
-    /* Cards grid */
-    .cards{
-      display:grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 14px;
-    }
-
-    .card{
-      position:relative;
-      border: 1px solid rgba(255,255,255,0.12);
-      border-radius: 16px;
-      padding: 14px;
-      background:
-        radial-gradient(420px 220px at 15% 10%, rgba(72,255,210,0.12), transparent 60%),
-        linear-gradient(180deg, rgba(0,0,0,0.26), rgba(0,0,0,0.06));
-      overflow:hidden;
-      transition: transform 130ms ease, border-color 130ms ease, box-shadow 130ms ease, filter 130ms ease;
-    }
-    .card::before{
-      content:"";
-      position:absolute; inset:-2px;
-      background:
-        linear-gradient(90deg, transparent, rgba(72,255,210,0.16), transparent);
-      transform: translateX(-120%);
-      transition: transform 260ms ease;
-      pointer-events:none;
-    }
-    .card:hover{
-      transform: translateY(-2px);
-      border-color: rgba(72,255,210,0.45);
-      box-shadow: 0 0 0 3px rgba(72,255,210,0.10), 0 16px 50px rgba(0,0,0,0.60);
-      filter: saturate(1.08);
-    }
-    .card:hover::before{
-      transform: translateX(120%);
-    }
-
-    .cardTop{
-      display:flex;
-      justify-content:space-between;
-      gap:10px;
-      align-items:flex-start;
-    }
-    .who{
-      font-weight: 800;
-      font-size: 16px;
-      line-height: 1.15;
-    }
-    .small{
-      color: var(--muted);
-      font-size: 12px;
-      margin-top: 6px;
-    }
-
-    .chip{
-      border: 1px solid rgba(255,255,255,0.14);
-      background: rgba(0,0,0,0.25);
-      border-radius: 999px;
-      padding: 6px 10px;
-      font-size: 12px;
-      color: var(--muted);
-      white-space:nowrap;
-    }
-
-    .go{
-      margin-top: 12px;
-      width:100%;
-      display:inline-flex;
-      justify-content:center;
-      align-items:center;
-      gap:10px;
-      padding: 11px 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(72,255,210,0.55);
-      background: linear-gradient(180deg, rgba(72,255,210,0.18), rgba(0,0,0,0.18));
-      color: var(--text);
-      text-decoration:none;
-      font-weight: 900;
-      letter-spacing: 0.3px;
-      transition: transform 120ms ease, box-shadow 120ms ease, border-color 120ms ease;
-      user-select:none;
-    }
-    .go:hover{
-      transform: translateY(-1px);
-      box-shadow: 0 0 0 3px rgba(72,255,210,0.10), 0 14px 40px rgba(0,0,0,0.55);
-      border-color: rgba(72,255,210,0.85);
-    }
-    .go:active{ transform: translateY(0); }
-    .go .arrow{
-      display:inline-block;
-      width:10px;height:10px;
-      border-right: 2px solid var(--neon);
-      border-bottom: 2px solid var(--neon);
-      transform: rotate(-45deg);
-      filter: drop-shadow(0 0 10px rgba(72,255,210,0.4));
-    }
-
-    /* Side panel */
-    .hint{
-      line-height:1.5;
-      color: var(--muted);
-      font-size: 13px;
-    }
-    .list{
-      margin: 12px 0 0;
-      padding-left: 18px;
-      color: var(--muted);
-      font-size: 13px;
-    }
-    .kbd{
-      display:inline-block;
-      border: 1px solid rgba(255,255,255,0.16);
-      border-bottom-color: rgba(255,255,255,0.32);
-      background: rgba(0,0,0,0.22);
-      border-radius: 8px;
-      padding: 2px 8px;
-      font-size: 12px;
-      color: var(--text);
-    }
-
-    .footer{
-      margin-top: 18px;
-      padding: 12px 14px;
-      border: 1px solid rgba(255,255,255,0.10);
-      border-radius: 14px;
-      color: rgba(234,255,248,0.55);
-      font-size: 12px;
-      background: rgba(0,0,0,0.18);
-    }
-
-    /* Reduced motion */
-    @media (prefers-reduced-motion: reduce){
-      .scanlines{ animation:none; }
-      .card, .btn, .go{ transition:none; }
-      .card::before{ display:none; }
-    }
-  </style>
+  <title>Audiobooks HUB</title>
+  <link rel="stylesheet" href="assets/css/hub.css" />
 </head>
 <body>
-  <div class="bg"></div>
-  <div class="scanlines"></div>
-  <div class="grid"></div>
-
-  <div class="wrap">
-    <div class="topbar">
-      <div class="brand">
-        <div class="sig">Digi Summer Hub</div>
-        <div class="tag">audible libraries, edition cyber</div>
+  <!-- ENTER overlay (unlock audio) -->
+  <div id="enterOverlay" class="enterOverlay" aria-modal="true" role="dialog">
+    <div class="enterCard">
+      <div class="enterTitle">DIGI HUB ACCESS</div>
+      <div class="enterSub">
+        Clique pour demarrer. Audio et effets s activent apres interaction.
       </div>
-
-      <div class="status">
-        <div class="pill"><span class="dot"></span> online</div>
-        <button id="sfxBtn" class="btn" type="button">SFX: ON</button>
-        <button id="musicBtn" class="btn" type="button">Music: OFF</button>
-      </div>
-    </div>
-
-    <div class="main">
-      <div class="panel">
-        <div class="panelHead">
-          <div class="panelTitle"><span class="mark"></span>Bibliotheques</div>
-          <div class="pill">Hover = bip, Click = blip</div>
-        </div>
-
-        <div class="panelBody">
-          <div class="cards">
-            <div class="card" data-sfx="hover">
-              <div class="cardTop">
-                <div>
-                  <div class="who">MastoDeCoco</div>
-                  <div class="small">Audible</div>
-                </div>
-                <div class="chip">primary</div>
-              </div>
-              <a class="go" href="./MastoDeCoco/" data-sfx="click">
-                Ouvrir la galerie <span class="arrow"></span>
-              </a>
-            </div>
-
-            <div class="card" data-sfx="hover">
-              <div class="cardTop">
-                <div>
-                  <div class="who">Laurn</div>
-                  <div class="small">Audible</div>
-                </div>
-                <div class="chip">guest</div>
-              </div>
-              <a class="go" href="./Laurn/" data-sfx="click">
-                Ouvrir la galerie <span class="arrow"></span>
-              </a>
-            </div>
-
-            <!-- Ajoute d autres cartes ici -->
-          </div>
-        </div>
-      </div>
-
-      <div class="panel">
-        <div class="panelHead">
-          <div class="panelTitle"><span class="mark"></span>Console</div>
-          <div class="pill">v2</div>
-        </div>
-
-        <div class="panelBody">
-          <div class="hint">
-            Style inspire Digimon le film + Summer Wars, UI sci fi.
-            Les bips type console retro sont generes en WebAudio.
-          </div>
-
-          <ul class="list">
-            <li><span class="kbd">SFX</span> coupe ou active les bips au hover et au click.</li>
-            <li><span class="kbd">Music</span> joue un fichier local si tu l ajoutes au repo.</li>
-            <li>Pour ajouter un membre: cree un dossier avec la galerie ALE, puis duplique une carte.</li>
-          </ul>
-
-          <div class="footer">
-            Audio note: ajoute un fichier <b>butterfly_chiptune.mp3</b> a la racine du repo
-            (ou change le nom dans le code JS).
-          </div>
-        </div>
-      </div>
+      <button id="enterBtn" class="enterBtn">ENTER</button>
+      <div class="enterHint">Tip: volume par defaut 50%</div>
     </div>
   </div>
 
-  <audio id="bgm" preload="auto" loop>
-    <!-- IMPORTANT: tu dois ajouter toi meme le fichier dans le repo -->
-    <source src="./butterfly_chiptune.mp3" type="audio/mpeg">
-  </audio>
+  <!-- Background visuals -->
+  <div class="bgLayer" aria-hidden="true">
+    <div class="scanlines"></div>
+    <div class="noise"></div>
+    <div class="gifWall"></div>
+  </div>
 
-  <script>
-    // Retro SFX using WebAudio (no external files)
-    let audioCtx = null;
-    let sfxEnabled = true;
+  <header class="topBar">
+    <div class="brand">
+      <div class="brandTitle">AUDIBLE LIBRARIES HUB</div>
+      <div class="brandMeta">Digimon / Summer Wars / EVA vibes</div>
+    </div>
 
-    function getCtx(){
-      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      return audioCtx;
-    }
+    <div class="controls">
+      <div class="controlGroup">
+        <label class="controlLabel" for="searchInput">SEARCH</label>
+        <input id="searchInput" class="searchInput" type="search" placeholder="Titre, auteur, owner..." autocomplete="off" />
+      </div>
 
-    function beep(freq, ms, type, gain){
-      const ctx = getCtx();
-      const o = ctx.createOscillator();
-      const g = ctx.createGain();
-      o.type = type || "square";
-      o.frequency.value = freq;
-      g.gain.value = gain || 0.03;
+      <div class="controlGroup audioGroup">
+        <div class="toggles">
+          <button id="toggleSfx" class="toggleBtn" type="button">SFX: ON</button>
+          <button id="toggleMusic" class="toggleBtn" type="button">MUSIC: ON</button>
+          <button id="toggleVisuals" class="toggleBtn" type="button">VISUALS: ON</button>
+        </div>
 
-      o.connect(g);
-      g.connect(ctx.destination);
+        <div class="volumeRow">
+          <label class="controlLabel" for="volumeSlider">VOLUME</label>
+          <input id="volumeSlider" class="volumeSlider" type="range" min="0" max="100" value="50" />
+          <div id="volumeValue" class="volumeValue">50%</div>
+        </div>
+      </div>
+    </div>
+  </header>
 
-      const now = ctx.currentTime;
-      g.gain.setValueAtTime(g.gain.value, now);
-      g.gain.exponentialRampToValueAtTime(0.0001, now + ms/1000);
+  <main class="main">
+    <section class="panel">
+      <div class="panelHeader">
+        <div class="panelTitle">LIBRARIES</div>
+        <div id="statusText" class="panelStatus">Booting...</div>
+      </div>
 
-      o.start(now);
-      o.stop(now + ms/1000 + 0.02);
-    }
+      <div id="cardsGrid" class="grid"></div>
+    </section>
 
-    function sfxHover(){
-      if (!sfxEnabled) return;
-      // Game Boy-ish: quick up chirp
-      beep(880, 55, "square", 0.028);
-      setTimeout(() => beep(1175, 45, "square", 0.020), 20);
-    }
+    <section class="panel">
+      <div class="panelHeader">
+        <div class="panelTitle">GLOBAL RESULTS</div>
+        <div class="panelStatus">Recherche cross biblios</div>
+      </div>
+      <div id="results" class="results"></div>
+    </section>
+  </main>
 
-    function sfxClick(){
-      if (!sfxEnabled) return;
-      // Blip-down confirm
-      beep(988, 35, "square", 0.030);
-      setTimeout(() => beep(659, 55, "square", 0.030), 18);
-    }
-
-    // Bind SFX events
-    document.querySelectorAll("[data-sfx='hover']").forEach(el => {
-      el.addEventListener("mouseenter", () => {
-        // Ensure audio context unlocked by user gesture at least once
-        // Hover is sometimes not considered a gesture, so also unlock on any click below.
-        sfxHover();
-      });
-    });
-
-    document.querySelectorAll("[data-sfx='click']").forEach(el => {
-      el.addEventListener("click", () => {
-        if (audioCtx && audioCtx.state === "suspended") audioCtx.resume();
-        sfxClick();
-      });
-    });
-
-    // Toggle buttons
-    const sfxBtn = document.getElementById("sfxBtn");
-    sfxBtn.addEventListener("click", () => {
-      // unlock
-      const ctx = getCtx();
-      if (ctx.state === "suspended") ctx.resume();
-
-      sfxEnabled = !sfxEnabled;
-      sfxBtn.textContent = "SFX: " + (sfxEnabled ? "ON" : "OFF");
-      sfxClick();
-    });
-
-    const bgm = document.getElementById("bgm");
-    const musicBtn = document.getElementById("musicBtn");
-    let musicOn = false;
-
-    musicBtn.addEventListener("click", async () => {
-      const ctx = getCtx();
-      if (ctx.state === "suspended") await ctx.resume();
-
-      musicOn = !musicOn;
-      musicBtn.textContent = "Music: " + (musicOn ? "ON" : "OFF");
-      sfxClick();
-
-      try{
-        if (musicOn){
-          await bgm.play();
-        } else {
-          bgm.pause();
-        }
-      } catch (e){
-        // If file missing or autoplay blocked
-        musicOn = false;
-        musicBtn.textContent = "Music: OFF";
-        console.warn("Music not available. Add butterfly_chiptune.mp3 to repo root.", e);
-      }
-    });
-
-    // Optional: unlock audio on first user interaction
-    window.addEventListener("click", () => {
-      const ctx = getCtx();
-      if (ctx.state === "suspended") ctx.resume();
-    }, { once: true });
-  </script>
+  <script src="assets/js/hub.js"></script>
 </body>
 </html>
