@@ -4,13 +4,18 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <title>Audiobooks Libraries</title>
+  <title>Audiobooks Libraries - Digi Edition</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
 
   <style>
     body {
-      background: #121212;
+      background-image: url("https://media.giphy.com/media/3o7aD2saalBwwftBIY/giphy.gif");
+      background-size: cover;
+      background-attachment: fixed;
+
       color: white;
-      font-family: system-ui, -apple-system, Arial, sans-serif;
+      font-family: 'Comic Neue', cursive;
       padding: 24px;
       margin: 0;
     }
@@ -18,15 +23,22 @@
     .container {
       max-width: 900px;
       margin: 0 auto;
+      background: rgba(0, 0, 0, 0.8);
+      padding: 20px;
+      border-radius: 16px;
     }
 
     h1 {
-      margin-bottom: 8px;
+      font-family: 'Press Start 2P', cursive;
+      text-align: center;
+      color: #ffcc00;
+      text-shadow: 2px 2px 0px black;
     }
 
     .subtitle {
-      color: #aaa;
-      margin-bottom: 24px;
+      text-align: center;
+      margin-bottom: 20px;
+      color: #ddd;
     }
 
     .grid {
@@ -36,34 +48,39 @@
     }
 
     .card {
-      background: #1e1e1e;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
       border-radius: 12px;
       padding: 16px;
       transition: transform 0.2s ease;
+      text-align: center;
     }
 
     .card:hover {
-      transform: scale(1.02);
-      background: #252525;
+      transform: scale(1.05);
     }
 
     .card a {
       text-decoration: none;
-      color: #f8991c;
+      color: #ffcc00;
       font-weight: bold;
       font-size: 18px;
     }
 
     .meta {
-      color: #bbb;
+      color: #eee;
       margin-top: 6px;
       font-size: 14px;
     }
 
+    .digimon {
+      margin-top: 10px;
+    }
+
     .footer {
       margin-top: 40px;
-      color: #666;
+      color: #aaa;
       font-size: 12px;
+      text-align: center;
     }
   </style>
 </head>
@@ -71,31 +88,38 @@
 <body>
   <div class="container">
 
-    <h1>📚 Bibliothèques partagées</h1>
+    <h1>📚 DIGI-LIBRARIES</h1>
+
     <div class="subtitle">
-      Hub central des collections Audible
+      Le hub des bibliothèques audio... version 90's 😎
     </div>
 
     <div class="grid">
 
       <div class="card">
         <a href="./MastoDeCoco/">Bibliothèque de MastoDeCoco</a>
-        <div class="meta">Audible – Science-Fiction & Fantasy</div>
+        <div class="meta">Audible – SF & Fantasy</div>
+
+        <div class="digimon">
+          <img src="https://media.giphy.com/media/11sBLVxNs7v6WA/giphy.gif" width="120">
+        </div>
       </div>
 
       <div class="card">
         <a href="./Laurn/">Bibliothèque de Laurn</a>
         <div class="meta">Audible</div>
+
+        <div class="digimon">
+          <img src="https://media.giphy.com/media/12F2uE2kZzH1P2/giphy.gif" width="120">
+        </div>
       </div>
 
     </div>
 
     <div class="footer">
-      Page générée automatiquement à partir des galeries ALE
+      Powered by ALE + Nostalgie + Beaucoup trop de GIFs
     </div>
 
   </div>
 </body>
 </html>
-
-
