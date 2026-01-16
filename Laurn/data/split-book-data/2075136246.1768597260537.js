@@ -1,0 +1,1 @@
+window.bookSummaryJSON = "<p>Après deux ans et sept mois à se morfondre sur l'arche d'Anima, Ophélie a décidé d'agir. Sous une fausse identité, Ophélie rejoint Babel, arche cosmopolite et joyau de modernité. Ses talents de liseuse suffiront-ils à déjouer les pièges d'adversaires toujours plus redoutables ? A-t-elle la moindre chance de retrouver la trace de Thorn ?</p>"; 
