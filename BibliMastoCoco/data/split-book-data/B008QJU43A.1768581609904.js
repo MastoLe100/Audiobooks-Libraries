@@ -1,0 +1,1 @@
+window.bookSummaryJSON = "<p>Zinzi December has a Sloth on her back, a dirty 419 scam habit, and a talent for finding lost things. But when a little old lady turns up dead and the cops confiscate her last paycheck, she’s forced to take on her least favourite kind of job: missing persons.</p>"; 

@@ -1,0 +1,1 @@
+window.bookSummaryJSON = "<p>Bill, pirate en cavale, meurt en disant au jeune Jim Hawkins de se méfier du « marin à la jambe de bois ». La vie de Jim bascule quand il trouve dans les affaires de Bill une carte au trésor. Il est embarqué dans une expédition sur les mers, où il fait la rencontre de Long John Silver, charismatique cuisinier... à la jambe de bois...</p>"; 
