@@ -493,3 +493,55 @@ body {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }
+/* Animated Digimon-ish landscape only under the LIBRARIES panel */
+.panelLibraries {
+    position: relative;
+    overflow: hidden;
+}
+
+    .panelLibraries::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        opacity: .55;
+        pointer-events: none;
+        background-size: 140% 140%, 120% 120%, 140% 120%, 140% 120%, 140% 120%;
+        background-position: 0% 0%, 50% 25%, 50% 75%, 50% 88%, 50% 100%;
+        background-image:
+        /* sky */
+        linear-gradient(180deg, rgba(80,170,255,.22) 0%, rgba(130,240,255,.12) 45%, rgba(10,16,30,0) 78% ),
+        /* sun glow */
+        radial-gradient(circle at 78% 22%, rgba(255,230,120,.18), transparent 45%),
+        /* far hills */
+        radial-gradient(120% 70% at 15% 110%, rgba(120,255,180,.18), transparent 58%), radial-gradient(120% 70% at 85% 115%, rgba(90,220,255,.14), transparent 62%),
+        /* forest silhouette band */
+        linear-gradient(180deg, transparent 0%, rgba(0,0,0,.12) 60%, rgba(0,0,0,.28) 100%);
+        filter: saturate(1.45) contrast(1.05);
+        animation: digiMeadowDrift 16s ease-in-out infinite;
+    }
+
+    /* keep the actual content above the landscape */
+    .panelLibraries .panelHeader,
+    .panelLibraries .grid {
+        position: relative;
+        z-index: 1;
+    }
+
+@keyframes digiMeadowDrift {
+    0% {
+        transform: translate3d(0,0,0);
+        background-position: 0% 0%, 50% 25%, 50% 75%, 50% 88%, 50% 100%;
+    }
+
+    50% {
+        transform: translate3d(0,-2px,0);
+        background-position: 100% 6%, 46% 22%, 52% 74%, 48% 89%, 50% 100%;
+    }
+
+    100% {
+        transform: translate3d(0,0,0);
+        background-position: 0% 0%, 50% 25%, 50% 75%, 50% 88%, 50% 100%;
+    }
+}
+

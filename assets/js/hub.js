@@ -23,6 +23,18 @@ const DIGIMON_GIFS = [
     "https://media.tenor.com/XLpZvV2iAPkAAAAM/digimon-anime.gif",
     "https://media.tenor.com/NJD20NdHhwAAAAAM/digimon-patamon.gif",
     "https://media.tenor.com/Tf-F85ZbPHIAAAAM/digimon-patamon.gif"
+    "https://media1.tenor.com/m/0VXVe7lJrG0AAAAd/digimon-digimon-adventure.gif",
+    "https://media1.tenor.com/m/uLSJ0BSkTBEAAAAd/digimon-adventure.gif",
+    "https://media1.tenor.com/m/fRUfCXbgNw0AAAAd/digimon-digimon-adventure.gif",
+    "https://media1.tenor.com/m/f-z2fN5eqvMAAAAd/digimon-adventure.gif",
+    "https://media1.tenor.com/m/MAtg4nn1iCEAAAAd/digimon-digimon-adventure.gif",
+    "https://media1.tenor.com/m/Mt5H8uUHU0AAAAAd/digimon-gabumon.gif",
+    "https://media1.tenor.com/m/mNU6NkYseegAAAAd/digimon-digimon-adventure.gif",
+    "https://media1.tenor.com/m/VknHJ1VZGwsAAAAd/digimon-adventure-reboot.gif",
+    "https://media1.tenor.com/m/7vNqu5rPMCcAAAAd/digimon-digivolve.gif",
+    "https://media1.tenor.com/m/CyRSUC1yDIcAAAAd/gabumon-bite.gif",
+    "https://media1.tenor.com/m/KxbSjkCZje8AAAAd/digimon-greymon.gif"
+
 ];
 
 const els = {
