@@ -1,12 +1,9 @@
 "use strict";
 
 /*
-  Hub JS V2
-  - Overlay GIVE IN always works
-  - SFX generated with WebAudio (no wav needed)
-  - Music uses local mp3
-  - Right panel shows many Digimon gifs
-  - Left panel cards + preview covers (best effort)
+  Hub JS V2 - overlay fix:
+  - ferme l overlay sur: clic n importe ou, touche n importe laquelle, ou bouton
+  - unlock audio sur la premiere interaction (si possible)
 */
 
 const state = {
@@ -15,7 +12,6 @@ const state = {
     musicOn: true,
     visualsOn: true,
     volume: 0.5,
-
     audioCtx: null,
     masterGain: null,
     musicEl: null,
@@ -33,7 +29,6 @@ const DIGIMON_GIFS = [
     "https://media.tenor.com/XLpZvV2iAPkAAAAM/digimon-anime.gif",
     "https://media.tenor.com/NJD20NdHhwAAAAAM/digimon-patamon.gif",
     "https://media.tenor.com/Tf-F85ZbPHIAAAAM/digimon-patamon.gif",
-
     "https://media1.tenor.com/m/wRGQJMgaZkwAAAAd/digimon-adventure.gif",
     "https://media1.tenor.com/m/Mt5H8uUHU0AAAAAd/digimon-gabumon.gif",
     "https://media1.tenor.com/m/7vNqu5rPMCcAAAAd/digimon-digivolve.gif",
@@ -42,21 +37,11 @@ const DIGIMON_GIFS = [
     "https://media1.tenor.com/m/mNU6NkYseegAAAAd/digimon-digimon-adventure.gif",
     "https://media1.tenor.com/m/fRUfCXbgNw0AAAAd/digimon-digimon-adventure.gif",
     "https://media1.tenor.com/m/uLSJ0BSkTBEAAAAd/digimon-adventure.gif",
-    "https://media1.tenor.com/m/MAtg4nn1iCEAAAAd/digimon-digimon-adventure.gif",
+    "https://media1.tenor.com/m/MAtg4nn1iCEAAAAd/digimon-digimon-adventure.gif"
 ];
 
-function $(id) {
-    return document.getElementById(id);
-}
-
-function clamp01(x) {
-    return Math.max(0, Math.min(1, x));
-}
-
-function setText(el, txt) {
-    if (!el) return;
-    el.textContent = txt;
-}
+function $(id) { return document.getElementById(id); }
+function clamp01(x) { return Math.max(0, Math.min(1, x)); }
 
 function setToggle(btn, on, label) {
     if (!btn) return;
@@ -94,6 +79,7 @@ function syncAudio() {
     }
 }
 
+/* WebAudio SFX */
 function beep(opts) {
     const o = opts || {};
     const freq = o.freq ?? 740;
@@ -112,10 +98,7 @@ function beep(opts) {
 
     osc.type = type;
     osc.frequency.setValueAtTime(freq, t0);
-
-    if (slideTo) {
-        osc.frequency.exponentialRampToValueAtTime(slideTo, t0 + dur);
-    }
+    if (slideTo) osc.frequency.exponentialRampToValueAtTime(slideTo, t0 + dur);
 
     g.gain.setValueAtTime(0.0001, t0);
     g.gain.exponentialRampToValueAtTime(gain, t0 + 0.005);
@@ -128,18 +111,12 @@ function beep(opts) {
     osc.stop(t0 + dur + 0.01);
 }
 
-function sfxHover() {
-    beep({ freq: 880, dur: 0.03, type: "square", gain: 0.08, slideTo: 660 });
-}
-
+function sfxHover() { beep({ freq: 880, dur: 0.03, type: "square", gain: 0.08, slideTo: 660 }); }
 function sfxClick() {
     beep({ freq: 660, dur: 0.06, type: "square", gain: 0.11, slideTo: 990 });
     setTimeout(() => beep({ freq: 990, dur: 0.04, type: "square", gain: 0.08, slideTo: 660 }), 55);
 }
-
-function sfxToggleOff() {
-    beep({ freq: 220, dur: 0.07, type: "square", gain: 0.10, slideTo: 140 });
-}
+function sfxToggleOff() { beep({ freq: 220, dur: 0.07, type: "square", gain: 0.10, slideTo: 140 }); }
 
 async function unlockAudio() {
     if (state.unlocked) return;
@@ -164,7 +141,7 @@ function escapeHtml(s) {
         .replaceAll("'", "&#039;");
 }
 
-/* Preview parsing for ALE gallery (best effort) */
+/* Preview parsing (best effort) */
 function extractCoverUrlsFromHtml(html, limit) {
     const cap = limit ?? 6;
     const doc = new DOMParser().parseFromString(html, "text/html");
@@ -209,7 +186,6 @@ async function fetchGalleryPreview(libSlug) {
 function renderCards(libs) {
     const grid = $("cardsGrid");
     if (!grid) return;
-
     grid.innerHTML = "";
 
     for (const lib of libs) {
@@ -255,10 +231,6 @@ function renderCards(libs) {
         fetchGalleryPreview(lib.slug).then((urls) => {
             const row = document.getElementById(`preview-${lib.slug}`);
             if (!row) return;
-            if (!urls.length) {
-                row.innerHTML = "";
-                return;
-            }
             row.innerHTML = urls.map((u) => `<img class="previewImg" src="${u}" alt="" loading="lazy" />`).join("");
         });
     }
@@ -267,7 +239,6 @@ function renderCards(libs) {
 function renderGifWall() {
     const gifGrid = $("gifGrid");
     if (!gifGrid) return;
-
     gifGrid.innerHTML = "";
 
     for (const url of DIGIMON_GIFS) {
@@ -293,9 +264,7 @@ function bindUI() {
 
     if (toggleSfx) {
         toggleSfx.addEventListener("click", () => {
-            if (state.sfxOn) sfxToggleOff();
-            else sfxClick();
-
+            if (state.sfxOn) sfxToggleOff(); else sfxClick();
             state.sfxOn = !state.sfxOn;
             setToggle(toggleSfx, state.sfxOn, "SFX");
         });
@@ -329,44 +298,48 @@ function bindUI() {
     }
 }
 
-/* Overlay GIVE IN: failproof click */
+/* Overlay: ferme sur n importe quel clic ou touche */
 function bindOverlay() {
     const overlay = $("enterOverlay");
     const btn = $("enterBtn");
-    const statusText = $("statusText");
+    if (!overlay) return;
 
-    if (!overlay || !btn) return;
+    const statusText = $("statusText");
 
     async function enter() {
         try {
             await unlockAudio();
             sfxClick();
-            overlay.style.display = "none";
-            setText(statusText, `SYSTEM READY: ${state.libs.length}`);
         } catch (e) {
             console.error(e);
-            setText(statusText, "ERROR AUDIO");
         }
+        overlay.style.display = "none";
+        if (statusText) statusText.textContent = `SYSTEM READY: ${state.libs.length}`;
     }
 
-    btn.addEventListener("click", (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        enter();
-    });
+    // bouton
+    if (btn) {
+        btn.addEventListener("click", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            enter();
+        }, { capture: true });
+    }
 
-    overlay.addEventListener("click", (e) => {
-        if (e.target === overlay) enter();
-    });
+    // clic n importe ou (meme sur la card)
+    document.addEventListener("pointerdown", () => {
+        if (overlay.style.display !== "none") enter();
+    }, { capture: true });
 
-    window.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" && overlay.style.display !== "none") enter();
-    });
+    // n importe quelle touche
+    document.addEventListener("keydown", () => {
+        if (overlay.style.display !== "none") enter();
+    }, { capture: true });
 }
 
 async function main() {
     const statusText = $("statusText");
-    setText(statusText, "SYSTEM BOOT...");
+    if (statusText) statusText.textContent = "SYSTEM BOOT...";
 
     state.volume = 0.5;
     const volumeSlider = $("volumeSlider");
@@ -378,16 +351,21 @@ async function main() {
     renderGifWall();
     bindOverlay();
 
-    setText(statusText, "LOADING LIBRARIES...");
-    state.libs = await fetchJSON("libraries.json");
+    if (statusText) statusText.textContent = "LOADING LIBRARIES...";
+    try {
+        state.libs = await fetchJSON("libraries.json");
+    } catch (e) {
+        console.error(e);
+        if (statusText) statusText.textContent = "ERROR: libraries.json";
+        return;
+    }
+
     renderCards(state.libs);
-    setText(statusText, `SYSTEM READY: ${state.libs.length}`);
+    if (statusText) statusText.textContent = `SYSTEM READY: ${state.libs.length}`;
 }
 
 if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", () => {
-        main().catch((err) => console.error(err));
-    });
+    document.addEventListener("DOMContentLoaded", () => main().catch(console.error));
 } else {
-    main().catch((err) => console.error(err));
+    main().catch(console.error);
 }

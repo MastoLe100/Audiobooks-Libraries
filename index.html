@@ -14,7 +14,7 @@
       <div class="enterSub">
         Place ton front sur l'ecran puis clique sur GIVE IN pour demarrer.
       </div>
-      <button id="enterBtn" class="enterBtn">GIVE IN</button>
+      <button id="enterBtn" class="enterBtn" type="button">GIVE IN</button>
     </div>
   </div>
 
@@ -49,7 +49,7 @@
   </header>
 
   <main class="main">
-    <section class="panel">
+    <section class="panel panelLibraries">
       <div class="panelHeader">
         <div class="panelTitle">LIBRARIES</div>
         <div id="statusText" class="panelStatus">SYSTEM BOOT...</div>
@@ -69,6 +69,38 @@
       <div id="gifGrid" class="gifGrid"></div>
     </section>
   </main>
+
+  <!-- Fallback: ferme l overlay sur n importe quel clic / touche, meme si hub.js ne charge pas -->
+  <script>
+    (function () {
+      var overlay = document.getElementById("enterOverlay");
+      if (!overlay) return;
+
+      function closeOverlay() {
+        overlay.style.display = "none";
+      }
+
+      // clique n importe ou
+      document.addEventListener("pointerdown", function () {
+        closeOverlay();
+      }, { capture: true, once: true });
+
+      // n importe quelle touche
+      document.addEventListener("keydown", function () {
+        closeOverlay();
+      }, { capture: true, once: true });
+
+      // bouton
+      var btn = document.getElementById("enterBtn");
+      if (btn) {
+        btn.addEventListener("click", function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          closeOverlay();
+        }, { capture: true });
+      }
+    })();
+  </script>
 
   <script src="assets/js/hub.js"></script>
 </body>
