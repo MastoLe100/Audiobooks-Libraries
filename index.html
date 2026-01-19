@@ -12,10 +12,9 @@
     <div class="enterCard">
       <div class="enterTitle">DIGI HUB ACCESS</div>
       <div class="enterSub">
-        Clique pour demarrer. Audio et effets s activent apres interaction.
+        Place ton front sur l'ecran puis clique sur GIVE IN pour demarrer.
       </div>
-      <button id="enterBtn" class="enterBtn">ENTER</button>
-      <div class="enterHint">Tip: volume par defaut 50%</div>
+      <button id="enterBtn" class="enterBtn">GIVE IN</button>
     </div>
   </div>
 
@@ -29,15 +28,10 @@
   <header class="topBar">
     <div class="brand">
       <div class="brandTitle">AUDIBLE LIBRARIES HUB</div>
-      <div class="brandMeta">Digimon / Summer Wars / EVA vibes</div>
+      <div class="brandMeta">Tu aimes les livrodio? :)</div>
     </div>
 
     <div class="controls">
-      <div class="controlGroup">
-        <label class="controlLabel" for="searchInput">SEARCH</label>
-        <input id="searchInput" class="searchInput" type="search" placeholder="Titre, auteur, owner..." autocomplete="off" />
-      </div>
-
       <div class="controlGroup audioGroup">
         <div class="toggles">
           <button id="toggleSfx" class="toggleBtn" type="button">SFX: ON</button>
@@ -58,7 +52,7 @@
     <section class="panel">
       <div class="panelHeader">
         <div class="panelTitle">LIBRARIES</div>
-        <div id="statusText" class="panelStatus">Booting...</div>
+        <div id="statusText" class="panelStatus">SYSTEM BOOT...</div>
       </div>
 
       <div id="cardsGrid" class="grid"></div>
@@ -66,10 +60,13 @@
 
     <section class="panel">
       <div class="panelHeader">
-        <div class="panelTitle">GLOBAL RESULTS</div>
-        <div class="panelStatus">Recherche cross biblios</div>
+        <div class="panelTitle">Scanning Digiworld...</div>
+        <div class="panelRight">
+          <div class="hourglass" aria-hidden="true"></div>
+        </div>
       </div>
-      <div id="results" class="results"></div>
+
+      <div id="gifGrid" class="gifGrid"></div>
     </section>
   </main>
 
